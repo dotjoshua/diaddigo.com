@@ -1,0 +1,107 @@
+#dashboard_page {
+    padding-top: 40px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard_section {
+    background: rgba(30, 30, 30, 0.8);
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#prayer_description {
+    color: #fff;
+}
+
+#prayer_user {
+    text-align: right;
+}
+
+.dashboard_table {
+    width: 100%;
+}
+
+.dashboard_table tr td {
+    padding: 5px;
+    vertical-align: top;
+}
+
+.dashboard_table tr td:nth-child(1) {
+    width: 100px;
+    background: none !important;
+}
+
+.dashboard_table tr td a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.dashboard_table tr {
+    background: #272727;
+}
+
+.dashboard_table tr:nth-child(odd) {
+    background: #2c2c2c;
+}
+
+.dashboard_header {
+    font-weight: 100;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.dashboard_button {
+    padding: 5px;
+    background: #333;
+    cursor: pointer;
+    margin-left: auto;
+    text-align: center;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    width: 100px;
+    box-sizing: border-box;
+}
+
+.user_icon {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+
+.other_button {
+    width: 100%;
+    background: #151515;
+    border: none;
+    margin-bottom: 5px;
+}
+
+a .other_button {
+    text-decoration: none;
+    color: #fff;
+}
+
+@media screen and (max-width: 700px) {
+    .dashboard_button {
+        padding: 10px;
+        width: 100%;
+    }
+
+    .jsh_alert_button {
+        color: #fff;
+        width: 100%;
+        display: block;
+        background: #333;
+        padding: 5px;
+        text-align: center;
+        margin-bottom: 5px;
+        box-sizing: border-box;
+    }
+}
