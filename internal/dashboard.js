@@ -124,7 +124,11 @@ jsh.select("#prayer_submit").js.addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
-                        alert("Prayer submitted.");
+                        alert("Prayer submitted.", "", {
+                            button_callback: function() {
+                                location.reload();
+                            }
+                        });
                         window.localStorage["token"] = response["token"];
                     }
                 }
@@ -169,7 +173,11 @@ jsh.select("#giving_submit").js.addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
-                        alert("Giving opportunity submitted.");
+                        alert("Giving opportunity submitted.", "", {
+                            button_callback: function() {
+                                location.reload();
+                            }
+                        });
                         window.localStorage["token"] = response["token"];
                     }
                 }
@@ -208,7 +216,11 @@ jsh.select("#links_submit").js.addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
-                        alert("Link submitted.");
+                        alert("Link submitted.", "", {
+                            button_callback: function() {
+                                location.reload();
+                            }
+                        });
                         window.localStorage["token"] = response["token"];
                     }
                 }
