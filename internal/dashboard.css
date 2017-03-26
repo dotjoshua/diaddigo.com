@@ -30,6 +30,8 @@
 .dashboard_table tr td {
     vertical-align: middle;
     padding: 10px;
+    word-break: break-all;
+    min-width: 50px;
 }
 
 .dashboard_table tr td:nth-child(1) {
