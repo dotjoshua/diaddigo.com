@@ -1,100 +1,109 @@
-jsh.req.post({
-    url: "db/get_prayer.php",
-    data: {token: window.localStorage.token},
-    parse_json: true,
-    async: false,
-    callback: function(result) {
-        if (!result["success"]) {
-            alert(result["error"]);
-        } else {
-            window.localStorage.token = result["token"];
-            jsh.select("#prayer_topic").js.innerText = "pray for " + result["prayer_topic"];
-            jsh.select("#prayer_description").js.innerText = result["prayer_description"];
-            jsh.select("#prayer_user").js.innerText = "- " + result["prayer_user"];
-        }
-    }
-});
+get_prayers();
 
-jsh.req.post({
-    url: "db/get_giving_opportunities.php",
-    data: {token: window.localStorage.token},
-    parse_json: true,
-    async: false,
-    callback: function(result) {
-        if (!result["success"]) {
-            alert(result["error"]);
-        } else {
-            window.localStorage.token = result["token"];
-            var table = jsh.select("#giving_table").js;
+function get_prayers() {
+    new jsh.Request({
+        url: "db/get_prayer.php",
+        data: {token: window.localStorage.token},
+        parse_json: true,
+        callback: function(result) {
+            if (!result["success"]) {
+                alert(result["error"]);
+            } else {
+                window.localStorage.token = result["token"];
+                jsh.get("#prayer_topic").innerText = "pray for " + result["prayer_topic"];
+                jsh.get("#prayer_description").innerText = result["prayer_description"];
+                jsh.get("#prayer_user").innerText = "- " + result["prayer_user"];
 
-            var rows = result["giving_opportunities"];
-            for (var i = 0; i < rows.length; i++) {
-                var row = document.createElement("tr");
-                var col = document.createElement("td");
-                var user_icon = document.createElement("div");
-                user_icon.classList.add("user_icon");
-                user_icon.style.backgroundImage = "url(resources/images/" + rows[i]["owner"] + ".jpg)";
-                col.appendChild(user_icon);
-                row.appendChild(col);
-
-                col = document.createElement("td");
-                var a = document.createElement("a");
-                a.innerText = rows[i]["name"];
-                a.href = rows[i]["link"];
-                col.appendChild(a);
-                row.appendChild(col);
-
-                col = document.createElement("td");
-                col.innerText = rows[i]["description"];
-                row.appendChild(col);
-
-                table.appendChild(row);
+                get_giving_opportunities();
             }
         }
-    }
-});
+    }).post();
+}
 
-jsh.req.post({
-    url: "db/get_links.php",
-    data: {token: window.localStorage.token},
-    parse_json: true,
-    async: false,
-    callback: function(result) {
-        if (!result["success"]) {
-            alert(result["error"]);
-        } else {
-            window.localStorage.token = result["token"];
-            var table = jsh.select("#links_table").js;
+function get_giving_opportunities() {
+    new jsh.Request({
+        url: "db/get_giving_opportunities.php",
+        data: {token: window.localStorage.token},
+        parse_json: true,
+        callback: function(result) {
+            if (!result["success"]) {
+                console.log(result);
+                alert(result["error"]);
+            } else {
+                window.localStorage.token = result["token"];
+                var table = jsh.get("#giving_table");
 
-            var rows = result["links"];
-            for (var i = 0; i < rows.length; i++) {
-                var row = document.createElement("tr");
-                var col = document.createElement("td");
-                var user_icon = document.createElement("div");
-                user_icon.classList.add("user_icon");
-                user_icon.style.backgroundImage = "url(resources/images/" + rows[i]["owner"] + ".jpg)";
-                col.appendChild(user_icon);
-                row.appendChild(col);
+                var rows = result["giving_opportunities"];
+                for (var i = 0; i < rows.length; i++) {
+                    var row = document.createElement("tr");
+                    var col = document.createElement("td");
+                    var user_icon = document.createElement("div");
+                    user_icon.classList.add("user_icon");
+                    user_icon.style.backgroundImage = "url(resources/images/" + rows[i]["owner"] + ".jpg)";
+                    col.appendChild(user_icon);
+                    row.appendChild(col);
 
-                col = document.createElement("td");
-                var a = document.createElement("a");
-                a.innerText = rows[i]["link"];
-                a.href = rows[i]["link"];
-                col.appendChild(a);
-                row.appendChild(col);
+                    col = document.createElement("td");
+                    var a = document.createElement("a");
+                    a.innerText = rows[i]["name"];
+                    a.href = rows[i]["link"];
+                    col.appendChild(a);
+                    row.appendChild(col);
 
-                col = document.createElement("td");
-                col.innerText = rows[i]["description"];
-                row.appendChild(col);
+                    col = document.createElement("td");
+                    col.innerText = rows[i]["description"];
+                    row.appendChild(col);
 
-                table.appendChild(row);
+                    table.appendChild(row);
+                }
+
+                get_links();
             }
         }
-    }
-});
+    }).post();
+}
 
+function get_links() {
+    new jsh.Request({
+        url: "db/get_links.php",
+        data: {token: window.localStorage.token},
+        parse_json: true,
+        callback: function(result) {
+            if (!result["success"]) {
+                alert(result["error"]);
+            } else {
+                window.localStorage.token = result["token"];
+                var table = jsh.get("#links_table");
 
-jsh.select("#prayer_submit").js.addEventListener("click", function() {
+                var rows = result["links"];
+                for (var i = 0; i < rows.length; i++) {
+                    var row = document.createElement("tr");
+                    var col = document.createElement("td");
+                    var user_icon = document.createElement("div");
+                    user_icon.classList.add("user_icon");
+                    user_icon.style.backgroundImage = "url(resources/images/" + rows[i]["owner"] + ".jpg)";
+                    col.appendChild(user_icon);
+                    row.appendChild(col);
+
+                    col = document.createElement("td");
+                    var a = document.createElement("a");
+                    a.innerText = rows[i]["link"];
+                    a.href = rows[i]["link"];
+                    col.appendChild(a);
+                    row.appendChild(col);
+
+                    col = document.createElement("td");
+                    col.innerText = rows[i]["description"];
+                    row.appendChild(col);
+
+                    table.appendChild(row);
+                }
+            }
+        }
+    }).post();
+}
+
+jsh.get("#prayer_submit").addEventListener("click", function() {
     alert(function() {
         var topic = document.createElement("input");
         topic.id = "prayer_topic_input";
@@ -112,13 +121,13 @@ jsh.select("#prayer_submit").js.addEventListener("click", function() {
         button_text: "submit",
         show_cancel: true,
         button_callback: function() {
-            jsh.req.post({
+            new jsh.Request({
                 url: "db/add_prayer.php",
                 parse_json: true,
                 data: {
                     token: window.localStorage.token,
-                    topic: jsh.select("#prayer_topic_input").js.value,
-                    description: jsh.select("#prayer_description_input").js.value
+                    topic: jsh.get("#prayer_topic_input").value,
+                    description: jsh.get("#prayer_description_input").value
                 },
                 callback: function(response) {
                     if (!response["success"]) {
@@ -132,12 +141,12 @@ jsh.select("#prayer_submit").js.addEventListener("click", function() {
                         window.localStorage["token"] = response["token"];
                     }
                 }
-            });
+            }).post();
         }
     });
 });
 
-jsh.select("#giving_submit").js.addEventListener("click", function() {
+jsh.get("#giving_submit").addEventListener("click", function() {
     alert(function() {
         var name = document.createElement("input");
         name.id = "giving_name_input";
@@ -160,14 +169,14 @@ jsh.select("#giving_submit").js.addEventListener("click", function() {
         button_text: "submit",
         show_cancel: true,
         button_callback: function() {
-            jsh.req.post({
+            new jsh.Request({
                 url: "db/add_giving_opportunity.php",
                 parse_json: true,
                 data: {
                     token: window.localStorage.token,
-                    name: jsh.select("#giving_name_input").js.value,
-                    link: jsh.select("#giving_link_input").js.value,
-                    description: jsh.select("#giving_description_input").js.value
+                    name: jsh.get("#giving_name_input").value,
+                    link: jsh.get("#giving_link_input").value,
+                    description: jsh.get("#giving_description_input").value
                 },
                 callback: function(response) {
                     if (!response["success"]) {
@@ -181,12 +190,12 @@ jsh.select("#giving_submit").js.addEventListener("click", function() {
                         window.localStorage["token"] = response["token"];
                     }
                 }
-            });
+            }).post();
         }
     });
 });
 
-jsh.select("#links_submit").js.addEventListener("click", function() {
+jsh.get("#links_submit").addEventListener("click", function() {
     alert(function() {
         var link = document.createElement("input");
         link.id = "link_link_input";
@@ -204,13 +213,13 @@ jsh.select("#links_submit").js.addEventListener("click", function() {
         button_text: "submit",
         show_cancel: true,
         button_callback: function() {
-            jsh.req.post({
+            new jsh.Request({
                 url: "db/add_link.php",
                 parse_json: true,
                 data: {
                     token: window.localStorage.token,
-                    link: jsh.select("#link_link_input").js.value,
-                    description: jsh.select("#link_description_input").js.value
+                    link: jsh.get("#link_link_input").value,
+                    description: jsh.get("#link_description_input").value
                 },
                 callback: function(response) {
                     if (!response["success"]) {
@@ -224,12 +233,12 @@ jsh.select("#links_submit").js.addEventListener("click", function() {
                         window.localStorage["token"] = response["token"];
                     }
                 }
-            });
+            }).post();
         }
     });
 });
 
-jsh.select("#account_logout").js.addEventListener("click", function(e) {
+jsh.get("#account_logout").addEventListener("click", function(e) {
     alert("Would you like to logout?", "Are you sure?", {
         button_callback: function() {
             window.localStorage.token = "";
@@ -240,7 +249,7 @@ jsh.select("#account_logout").js.addEventListener("click", function(e) {
     });
 });
 
-jsh.select("#account_change_password").js.addEventListener("click", function() {
+jsh.get("#account_change_password").addEventListener("click", function() {
     alert(function() {
         var new_pass_1 = document.createElement("input");
         new_pass_1.id = "new_pass_1_input";
@@ -260,17 +269,17 @@ jsh.select("#account_change_password").js.addEventListener("click", function() {
         button_text: "reset",
         show_cancel: true,
         button_callback: function() {
-            var new_pass_1 = jsh.select("#new_pass_1_input").js.value;
-            var new_pass_2 = jsh.select("#new_pass_2_input").js.value;
+            var new_pass_1 = jsh.get("#new_pass_1_input").value;
+            var new_pass_2 = jsh.get("#new_pass_2_input").value;
 
             if (new_pass_1 != new_pass_2) {
                 alert("Passwords do not match.", "Oops!", {
                     button_callback: function() {
-                        jsh.select("#account_change_password").js.dispatchEvent(new Event("click"));
+                        jsh.get("#account_change_password").dispatchEvent(new Event("click"));
                     }
                 })
             } else {
-                jsh.req.post({
+                new jsh.Request({
                     url: "db/reset_password.php",
                     parse_json: true,
                     data: {
@@ -279,13 +288,14 @@ jsh.select("#account_change_password").js.addEventListener("click", function() {
                     },
                     callback: function(response) {
                         if (!response["success"]) {
+                            console.log("here");
                             alert(response["error"]);
                         } else {
                             alert("Success.");
                             window.localStorage["token"] = response["token"];
                         }
                     }
-                });
+                }).post();
             }
         }
     });

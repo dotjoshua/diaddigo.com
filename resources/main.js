@@ -1,15 +1,20 @@
 var current_page;
 var username;
-alert = jsh.alert.open;
+var alert = function(a, b, c) {
+    c = c || {};
+    c["message"] = a;
+    c["title"] = b;
+    new jsh.Alert(c).open();
+};
 
 window.onload = function() {
-    jsh.cm.setup();
+    jsh.cm();
 
-    open_page("login_page");
+    open_page("page_login");
 
-    jsh.select("#login_password").js.addEventListener("keypress", login_keypress_handler);
-    jsh.select("#login_username").js.addEventListener("keypress", login_keypress_handler);
-    jsh.select("#login_button").js.addEventListener("click", function(e) {
+    jsh.get("#login_password").addEventListener("keypress", login_keypress_handler);
+    jsh.get("#login_username").addEventListener("keypress", login_keypress_handler);
+    jsh.get("#login_button").addEventListener("click", function(e) {
         login();
     });
 
@@ -26,10 +31,10 @@ function login_keypress_handler(e) {
 
 function login() {
     alert("logging in...");
-    var username = jsh.select("#login_username").js.value;
-    var password = jsh.select("#login_password").js.value;
+    var username = jsh.get("#login_username").value;
+    var password = jsh.get("#login_password").value;
 
-    jsh.req.post({
+    new jsh.Request({
         url: "db/login.php",
         parse_json: true,
         data: {
@@ -43,13 +48,13 @@ function login() {
                 load_dashboard(response["token"]);
             }
         }
-    });
+    }).post();
 }
 
 function load_dashboard(token, silent) {
     alert("loading...");
     
-    jsh.req.post({
+    new jsh.Request({
         url: "db/get_dashboard.php",
         parse_json: true,
         data: {
@@ -60,12 +65,12 @@ function load_dashboard(token, silent) {
                 if (!silent) {
                     alert(response["error"]);
                 } else {
-                    jsh.alert.close();
+                    new jsh.Alert().close();
                 }
             } else {
                 window.localStorage["token"] = response["token"];
                 username = response["username"];
-                jsh.select("#dashboard_page").js.innerHTML = response["html"];
+                jsh.get("#page_dashboard").innerHTML = response["html"];
 
                 var script = document.createElement("script");
                 script.innerHTML = response["js"];
@@ -75,15 +80,15 @@ function load_dashboard(token, silent) {
                 css.innerHTML = response["css"];
                 document.head.appendChild(css);
 
-                open_page("dashboard_page");
-                jsh.alert.close();
+                open_page("page_dashboard");
+                new jsh.Alert().close();
             }
         }
-    });
+    }).post();
 }
 
 function open_page(page_div_id) {
-    if (jsh.select("#" + page_div_id) == undefined) {
+    if (jsh.get("#" + page_div_id) == undefined) {
         alert("Page does not exist.", "Oops!");
         return;
     }
@@ -94,24 +99,24 @@ function open_page(page_div_id) {
 
     current_page = page_div_id;
 
-    var pages = jsh.select(".page");
+    var pages = jsh.get(".page");
     for (var i in pages) {
         if (!pages.hasOwnProperty(i)) continue;
-        pages[i].add_class("transparent");
-        pages[i].remove_class(pages[i].js.id + "_loading");
+        pages[i].classList.add("transparent");
+        pages[i].classList.remove(pages[i].id + "_loading");
     }
 
     setTimeout(function() {
-        var pages = jsh.select(".page");
+        var pages = jsh.get(".page");
         for (var i in pages) {
             if (!pages.hasOwnProperty(i)) continue;
-            pages[i].add_class("display_none");
+            pages[i].classList.add("display_none");
         }
 
-        jsh.select("#" + page_div_id).remove_class("display_none");
-        jsh.select("#" + page_div_id).add_class(page_div_id + "_loading");
+        jsh.get("#" + page_div_id).classList.remove("display_none");
+        jsh.get("#" + page_div_id).classList.add(page_div_id + "_loading");
         setTimeout(function() {
-            jsh.select("#" + page_div_id).remove_class("transparent");
+            jsh.get("#" + page_div_id).classList.remove("transparent");
         }, 10);
 
         setTimeout(function() {
@@ -119,7 +124,7 @@ function open_page(page_div_id) {
         }, 500);
     }, 500);
 
-    window.location.hash = page_div_id.substring(0, page_div_id.length - 5);
+    window.location.hash = page_div_id.substring(5);
 }
 
 if (('standalone' in window.navigator) && window.navigator.standalone) {
@@ -132,7 +137,7 @@ if (('standalone' in window.navigator) && window.navigator.standalone) {
             // Don't do this for javascript: links
             if (~(link = links[i]).href.toLowerCase().indexOf('javascript')) {
                 link.addEventListener('click', function(event) {
-                    top.location.href = this.href;
+                    window.location.href = this.href;
                     event.returnValue = false;
                 }, false);
             }

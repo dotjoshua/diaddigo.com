@@ -6,6 +6,15 @@ body, html {
     font-weight: 100;
 }
 
+#content {
+    height: 100%;
+    width: 100%;
+}
+
+.page {
+    transition: opacity 0.5s;
+}
+
 #jsh_alert_container {
     height: 100%;
     width: 100%;
@@ -28,19 +37,18 @@ body, html {
     padding: 20px;
     width: 100%;
     max-width: 500px;
-    background: #E6E3E1;
+    background: #eee;
 }
 
 #jsh_alert_title {
-    color: #2B415D;
-    font-weight: 800;
+    color: #333;
 }
 
 #jsh_alert_message {
     margin-top: 10px;
     margin-bottom: 15px;
     color: #666;
-    overflow-x: scroll;
+    word-break: break-all;
 }
 
 #jsh_alert_buttons {
@@ -59,7 +67,7 @@ body, html {
 }
 
 .jsh_alert_button:hover {
-    color: #E37954;
+    color: #aaa;
 }
 
 .jsh_transparent {
