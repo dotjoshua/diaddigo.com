@@ -107,4 +107,22 @@ a .other_button {
         margin-bottom: 5px;
         box-sizing: border-box;
     }
+
+    #d {
+        max-width: 50px;
+        max-height: 50px;
+    }
+
+    #jsh_alert_window input,
+    #jsh_alert_window textarea {
+        font-size: 14px;
+    }
+
+    .jsh_alert_button {
+        padding: 10px;
+    }
+
+    #jsh_alert_window {
+        padding: 15px 10px 10px;
+    }
 }

@@ -161,6 +161,14 @@ a {
     background: none;
 }
 
+#jsh_alert_window {
+    width: 95%;
+}
+
+#jsh_alert_window .jsh_alert_button:last-of-type {
+    margin-bottom: 0;
+}
+
 #jsh_alert_window input,
 #jsh_alert_window textarea {
     -webkit-appearance: none;
@@ -173,7 +181,9 @@ a {
 
 #jsh_alert_window textarea {
     height: 200px;
-    resize: vertical;
+    resize: none;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .transparent {

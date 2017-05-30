@@ -18,9 +18,9 @@ if (!$new_token) {
     echo json_encode(array(
         "success" => true,
         "token" => $new_token,
-        "html" => file_get_contents("../internal/dashboard.html"),
-        "js" => file_get_contents("../internal/dashboard.js"),
-        "css" => file_get_contents("../internal/dashboard.css"),
+        "html" => file_get_contents("../internal/internal.html"),
+        "js" => file_get_contents("../internal/internal.js"),
+        "css" => file_get_contents("../internal/internal.css"),
         "username" => $auth_data["username"]
     ));
 }

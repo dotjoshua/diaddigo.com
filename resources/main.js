@@ -19,7 +19,7 @@ window.onload = function() {
     });
 
     if (window.localStorage.token) {
-        load_dashboard(window.localStorage.token, true);
+        load_internal(window.localStorage.token, true);
     }
 };
 
@@ -45,17 +45,17 @@ function login() {
             if (!response["success"]) {
                 alert(response["error"], "");
             } else {
-                load_dashboard(response["token"]);
+                load_internal(response["token"]);
             }
         }
     }).post();
 }
 
-function load_dashboard(token, silent) {
+function load_internal(token, silent) {
     alert("loading...");
     
     new jsh.Request({
-        url: "db/get_dashboard.php",
+        url: "db/get_internal.php",
         parse_json: true,
         data: {
             token: token
@@ -71,7 +71,8 @@ function load_dashboard(token, silent) {
                 window.localStorage["token"] = response["token"];
                 username = response["username"];
 
-                jsh.get("#page_dashboard").innerHTML = response["html"];
+                jsh.get("#content").innerHTML += response["html"];
+                jsh.cm();
 
                 while (document.readyState !== "complete") {
                     console.log(document.readyState);
