@@ -5,25 +5,25 @@ var messages = {
 
     setup: function() {
         messages.user_id = Math.random().toString(36).slice(2);
-        messages.send_button = jsh.select("#messages_send");
-        messages.input = jsh.select("#messages_footer_input");
+        messages.send_button = jsh.get("#messages_send");
+        messages.input = jsh.get("#messages_footer_input");
 
-        messages.input.js.addEventListener("keyup", function(e) {
+        messages.input.addEventListener("keyup", function(e) {
             if (e.keyCode == 13) {
                 messages.send(e.target.value);
             }
 
             if (e.target.value == "") {
-                messages.send_button.add_class("messages_send_inactive");
+                messages.send_button.classList.add("messages_send_inactive");
             } else {
-                messages.send_button.remove_class("messages_send_inactive");
+                messages.send_button.classList.remove("messages_send_inactive");
             }
         });
 
-        messages.send_button.js.addEventListener("click", function() {
-            if (messages.input.js.value != "") {
-                messages.send(messages.input.js.value);
-                messages.input.js.value = "";
+        messages.send_button.addEventListener("click", function() {
+            if (messages.input.value != "") {
+                messages.send(messages.input.value);
+                messages.input.value = "";
             }
         });
 
@@ -31,7 +31,7 @@ var messages = {
     },
 
     send: function(message) {
-        jsh.req.get({
+        new jsh.Request({
             url: "./db/messages.php",
             data: {
                 message: message,
@@ -39,20 +39,20 @@ var messages = {
                 action: "send"
             },
             callback: function(response) {
-                messages.input.js.value = "";
-                messages.send_button.add_class("messages_send_inactive");
+                messages.input.value = "";
+                messages.send_button.classList.add("messages_send_inactive");
                 if (response["error"] != undefined) {
                     console.log(response["error"]);
                 }
             }
-        });
+        }).get();
     },
 
     listen: function() {
         if (messages.fetching) return;
         messages.fetching = true;
 
-        jsh.req.get({
+        new jsh.Request({
             url: "./db/messages.php",
             data: {
                 latest_id: messages.latest_id,
@@ -85,12 +85,12 @@ var messages = {
                     messages.fetching = false;
                 }
             }
-        });
+        }).get();
     },
 
     load: function(message, sent, datetime) {
         var origin = sent ? "sent" : "received";
-        var messages_div = jsh.select("#messages").js;
+        var messages_div = jsh.get("#messages");
 
         //<div class="texts_date"><b>Mon, Sep 6,</b> 11:11 PM</div>
         if (datetime > messages.last_posted_datetime) {
@@ -124,9 +124,9 @@ var messages = {
         container_div.appendChild(curl_div);
 
         if (sent) {
-            var delivered = jsh.select("#message_delivered");
+            var delivered = jsh.get("#message_delivered");
             if (delivered != undefined) {
-                delivered.js.remove();
+                delivered.remove();
             }
 
             delivered = document.createElement("div");
@@ -157,6 +157,6 @@ var messages = {
 };
 
 window.onload = function() {
-    jsh.cm.setup();
+    jsh.cm();
     messages.setup();
 };
