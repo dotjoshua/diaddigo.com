@@ -70,7 +70,12 @@ function load_dashboard(token, silent) {
             } else {
                 window.localStorage["token"] = response["token"];
                 username = response["username"];
+
                 jsh.get("#page_dashboard").innerHTML = response["html"];
+
+                while (document.readyState !== "complete") {
+                    console.log(document.readyState);
+                }
 
                 var script = document.createElement("script");
                 script.innerHTML = response["js"];
@@ -82,6 +87,14 @@ function load_dashboard(token, silent) {
 
                 jsh.pages["dashboard"].open();
                 new jsh.Alert().close();
+
+                var links = jsh.get("a");
+                for (var i = 0; i < links.length; i++) {
+                    links[i].onclick = function() {
+                        window.location=this.getAttribute("href");
+                        return false
+                    }
+                }
             }
         }
     }).post();
