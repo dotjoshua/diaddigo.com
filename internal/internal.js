@@ -156,13 +156,13 @@ jsh.get("#prayer_submit").addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
-                        announce("%USERNAME% added a prayer request to diaddigo.com.");
                         alert("Prayer submitted.", "", {
                             button_callback: function() {
                                 location.reload();
                             }
                         });
                         window.localStorage["token"] = response["token"];
+                        announce("%USERNAME% added a prayer request to diaddigo.com.");
                     }
                 }
             }).post();
@@ -206,13 +206,13 @@ jsh.get("#giving_submit").addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
-                        announce("%USERNAME% added a giving opportunity to diaddigo.com.");
                         alert("Giving opportunity submitted.", "", {
                             button_callback: function() {
                                 location.reload();
                             }
                         });
                         window.localStorage["token"] = response["token"];
+                        announce("%USERNAME% added a giving opportunity to diaddigo.com.");
                     }
                 }
             }).post();
@@ -250,13 +250,13 @@ jsh.get("#links_submit").addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
-                        announce("%USERNAME% added a link to diaddigo.com.");
                         alert("Link submitted.", "", {
                             button_callback: function() {
                                 location.reload();
                             }
                         });
                         window.localStorage["token"] = response["token"];
+                        announce("%USERNAME% added a link to diaddigo.com.");
                     }
                 }
             }).post();
