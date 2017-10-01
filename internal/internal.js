@@ -103,6 +103,29 @@ function get_links() {
     }).post();
 }
 
+function announce(message) {
+    new jsh.Request({
+        url: "db/announce.php",
+        data: {
+            token: window.localStorage.token,
+            message: message
+        },
+        parse_json: true,
+        callback: function(result) {
+            if (!result["success"]) {
+                alert(result["error"]);
+            } else {
+                window.localStorage.token = result["token"];
+                jsh.get("#prayer_topic").innerText = "pray for " + result["prayer_topic"];
+                jsh.get("#prayer_description").innerText = result["prayer_description"];
+                jsh.get("#prayer_user").innerText = "- " + result["prayer_user"];
+
+                get_giving_opportunities();
+            }
+        }
+    }).post();
+}
+
 jsh.get("#prayer_submit").addEventListener("click", function() {
     alert(function() {
         var topic = document.createElement("input");
@@ -133,6 +156,7 @@ jsh.get("#prayer_submit").addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
+                        announce("%USERNAME% added a prayer request to diaddigo.com.");
                         alert("Prayer submitted.", "", {
                             button_callback: function() {
                                 location.reload();
@@ -182,6 +206,7 @@ jsh.get("#giving_submit").addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
+                        announce("%USERNAME% added a giving opportunity to diaddigo.com.");
                         alert("Giving opportunity submitted.", "", {
                             button_callback: function() {
                                 location.reload();
@@ -225,6 +250,7 @@ jsh.get("#links_submit").addEventListener("click", function() {
                     if (!response["success"]) {
                         alert(response["error"]);
                     } else {
+                        announce("%USERNAME% added a link to diaddigo.com.");
                         alert("Link submitted.", "", {
                             button_callback: function() {
                                 location.reload();
