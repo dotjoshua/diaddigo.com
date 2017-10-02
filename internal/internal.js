@@ -144,13 +144,15 @@ jsh.get("#prayer_submit").addEventListener("click", function() {
         button_text: "submit",
         show_cancel: true,
         button_callback: function() {
+            var topic = jsh.get("#prayer_topic_input").value;
+            var description = jsh.get("#prayer_description_input").value;
             new jsh.Request({
                 url: "db/add_prayer.php",
                 parse_json: true,
                 data: {
                     token: window.localStorage.token,
-                    topic: jsh.get("#prayer_topic_input").value,
-                    description: jsh.get("#prayer_description_input").value
+                    topic: topic,
+                    description: description
                 },
                 callback: function(response) {
                     if (!response["success"]) {
@@ -162,7 +164,8 @@ jsh.get("#prayer_submit").addEventListener("click", function() {
                             }
                         });
                         window.localStorage["token"] = response["token"];
-                        announce("%USERNAME% added a prayer request to diaddigo.com.");
+                        announce("%USERNAME% added a prayer request to diaddigo.com. Pray for "
+                            + topic + ": " + description);
                     }
                 }
             }).post();
